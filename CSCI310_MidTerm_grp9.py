@@ -46,7 +46,7 @@ class DroneController(QObject):
         return self.current_action
 
 def main():
-    app = QGuiApplication(sys.argv)
+    app = QApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
     # Create controller object
