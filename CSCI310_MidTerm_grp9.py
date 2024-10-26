@@ -1,10 +1,15 @@
-import sys
+import sys,os,time
 from pathlib import Path
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import *
 from PySide6.QtGui import QGuiApplication
 from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
-import time
+
+#get file path
+if getattr(sys, 'frozen', False):
+    _FP = os.path.dirname(sys.executable)
+elif __file__:
+    _FP = os.path.dirname(__file__)
 
 class DroneController(QObject):
     # Signal to update the GUI
@@ -53,10 +58,11 @@ def main():
     droneController = DroneController()
 
     # Expose backend to QML
-    engine.rootContext().setContextProperty(backend,droneController)
+    engine.rootContext().setContextProperty("backend",droneController)
+    
 
     # Load the QML file
-    qml_file = Path(__file__).resolve().parent / "main.qml"
+    qml_file = f"{_FP}/main.qml"
     engine.load(qml_file)
 
     if not engine.rootObjects():
